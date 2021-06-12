@@ -19,8 +19,3 @@ class BmiCalc extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
