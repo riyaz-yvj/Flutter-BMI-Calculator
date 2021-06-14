@@ -1,10 +1,13 @@
-import 'package:bmi_calculator/results_page.dart';
+import 'package:bmi_calculator/screens/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'icon_content.dart';
-import 'reusable_card.dart';
-import 'constants.dart';
+import '../components/icon_content.dart';
+import '../components/reusable_card.dart';
+import '../constants.dart';
 import 'results_page.dart';
+import '../components/bottom_button.dart';
+import '../components/round_icon_button.dart';
+import 'package:bmi_calculator/calculator_brain.dart';
 
 enum Gender { male, female }
 
@@ -200,48 +203,26 @@ class _InputPageState extends State<InputPage> {
               )),
             ],
           )),
-          GestureDetector(
+          BottomButton(
             onTap: () {
+              CalculatorBrain calc = CalculatorBrain(
+                height: height,
+                weight: weight,
+              );
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ResultsPage()),
+                MaterialPageRoute(
+                    builder: (context) => ResultsPage(
+                          bmiValue: calc.calculateBMI(),
+                          bmiResult: calc.getResult(),
+                          feedback: calc.getInterpretation(),
+                        )),
               );
             },
-            child: Container(
-              child: Center(
-                  child: Text(
-                'CALCULATE',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.w500,
-                ),
-                  )),
-              margin: EdgeInsets.only(top: 10.0),
-              color: kBottomContainerColour,
-              width: double.infinity,
-              height: kBottomContainerHeight,
-            ),
+            buttonText: 'CALCULATE',
           ),
         ],
       ),
-    );
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({@required this.icon, @required this.onPressed});
-
-  final IconData icon;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: onPressed,
-      child: Icon(icon),
-      constraints: BoxConstraints.tightFor(width: 40.0, height: 40.0),
-      shape: CircleBorder(),
-      fillColor: Colors.grey,
     );
   }
 }
